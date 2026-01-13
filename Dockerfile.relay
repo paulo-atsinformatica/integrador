@@ -17,7 +17,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o relay-hub cmd/relay-hub/main.go
 FROM alpine:latest
 
 WORKDIR /app
-COPY --from:builder /app/relay-hub .
+COPY --from=builder /app/relay-hub .
 
 # Porta padrão do Relay Hub
 EXPOSE 8080
