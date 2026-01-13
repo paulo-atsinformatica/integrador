@@ -1,0 +1,29 @@
+# Build stage
+FROM golang:1.21-alpine AS builder
+
+WORKDIR /app
+
+# Copia dependências
+COPY go.mod go.sum ./
+RUN go mod download
+
+# Copia o código fonte
+COPY . .
+
+# Compila o binário do hub
+RUN CGO_ENABLED=0 GOOS=linux go build -o relay-hub cmd/relay-hub/main.go
+
+# Production stage
+FROM alpine:latest
+
+WORKDIR /app
+COPY --from:builder /app/relay-hub .
+
+# Porta padrão do Relay Hub
+EXPOSE 8080
+
+# Variáveis de ambiente padrão
+ENV RELAY_TOKEN=ATS_RELAY_SECRET
+ENV PORT=8080
+
+CMD ["./relay-hub"]

@@ -1,0 +1,12 @@
+﻿--- LOJA (SYSDBA:masterkey@localhost:3050/E:/reswincs/banco/TESTE.fb) ---
+SYNC_NODES:
+  CENTRAL | http://localhost:8081/sync | active:S
+FILA_INTEGRACAO (Last 2):
+  ID:10 | DCEA390B-E72B-A649-913C-6D46C099AE75 | CLIENTE | Stat:D | Ori:TRIGGER
+  FILA_DESTINOS:
+    -> CENTRAL | Stat:R | Err:status 500
+--- CENTRAL (SYSDBA:masterkey@localhost:3050/E:/reswincs/banco/TESTE2.fb) ---
+SYNC_NODES:
+  LOJA_DEFAULT | http://localhost:8080/sync | active:S
+  LOJA | http://[::1]:8080/sync | active:S
+FILA_INTEGRACAO (Last 2):

@@ -1,0 +1,2 @@
+CONNECT 'localhost:E:/Reswincs/Banco/TESTE.FB';
+SELECT GEN_UUID() FROM RDB$DATABASE;
