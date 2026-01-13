@@ -5,6 +5,7 @@ import (
 	"flag"
 	"log"
 	"net/http"
+	"os"
 	"sync"
 
 	"github.com/gorilla/websocket"
@@ -93,8 +94,21 @@ func (h *Hub) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	flag.Parse()
+
+	// Prioriza variáveis de ambiente (padrão em Docker/Coolify)
+	envAddr := os.Getenv("PORT")
+	if envAddr == "" {
+		envAddr = "8080" // Padrão se não informado
+	}
+	listenAddr := ":" + envAddr
+
+	envToken := os.Getenv("RELAY_TOKEN")
+	if envToken != "" {
+		*token = envToken
+	}
+
 	hub := &Hub{}
 
-	log.Printf("[RELAY] Iniciando Relay Hub em %s...", *addr)
-	log.Fatal(http.ListenAndServe(*addr, hub))
+	log.Printf("[RELAY] Iniciando Relay Hub em %s (Token: %s)...", listenAddr, *token)
+	log.Fatal(http.ListenAndServe(listenAddr, hub))
 }
